@@ -1,24 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import LineChart from './components/LineChart';
+import BarChart from './components/BarChart';
+import wineData from './wineData.json';
 
-function App() {
+const App: React.FC = () => {
+  const [data, setData] = useState<any[]>([]);
+
+  const lineChartDataX = data.map(obj => obj['Flavanoids']);
+  const lineChartDataY = data.map(obj => obj['Ash']);
+  const barChartDataX = Array.from(new Set(data.map(obj => obj['Alcohol'])));
+  const barChartDataY = Object.values(data.reduce((acc, curr, i) => {
+    if (acc[curr.Alcohol]) {
+      if (curr.Magnesium < acc[curr.Alcohol]) {
+        acc[curr.Alcohol] = curr.Magnesium;
+      }
+    } else {
+      acc[curr.Alcohol] = curr.Magnesium;
+    }
+    return acc;
+  }, {}));
+
+  useEffect(() => {
+    setData(wineData);
+  }, [])
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <LineChart lineChartDataX={lineChartDataX} lineChartDataY={lineChartDataY} />
+      <BarChart barChartDataX={barChartDataX} barChartDataY={barChartDataY} />
     </div>
   );
 }
