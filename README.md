@@ -21,7 +21,7 @@ You must have [list of software or dependencies required to run the project].
 ### Installing
 1.  Clone the repository
 
-    git clone https://github.com/your_username/your_project.git
+    git clone https://github.com/sr6110/graphs.git
 
 2.  Install dependencies
 
